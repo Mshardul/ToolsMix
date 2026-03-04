@@ -1,11 +1,14 @@
-import { Icon } from '@tabler/icons-react';
+import type { ComponentType, ElementType } from 'react';
+
 import {
-  IconBase64,
+  // Icon,
+  // IconBase64,
+  IconCode,
   IconHash,
   IconJson,
+  IconLock,
   IconNetwork,
   IconColorPicker,
-  IconCode,
   // ... import all needed icons (or use dynamic import)
 } from '@tabler/icons-react';
 
@@ -15,37 +18,35 @@ import {
 export interface Tool {
   id: string;               // unique slug, e.g., 'base64-encode'
   name: string;             // display name, e.g., 'Base64 Encoder/Decoder'
-  icon: Icon;               // Tabler icon component
-  component: () => Promise<{ default: React.ComponentType<any> }>; // lazy loader
+  icon: ElementType;  // Tabler icon component
+  component: () => Promise<{ default: ComponentType<any> }>; // lazy loader
 }
 
 export interface Category {
   id: string;
   name: string;
-  icon: Icon;
+  icon: ElementType;
   tools: Tool[];
 }
 
 export const categories: Category[] = [
   {
-    id: 'encoding',
-    name: 'Encoding',
-    icon: IconBase64, // replace with appropriate icon
+    id: 'developer-tools',
+    name: 'Developer Tools',
+    icon: IconCode,
     tools: [
       {
-        id: 'base64-encode',
-        name: 'Base64 Encoder / Decoder',
-        icon: IconBase64,
-        component: () => import('../../components/tools/encoding/Base64Tool')
+        id: 'uuid-generator',
+        name: 'UUID Generator',
+        icon: IconHash,
+        component: () => import('../../components/tools/UUIDGenerator')
       },
       {
-        id: 'base64-image',
-        name: 'Base64 Image Encoder / Decoder',
-        icon: IconBase64,
-        component: () => import('../../components/tools/encoding/Base64ImageTool')
-      },
-      // ... other tools
+        id: 'password-generator',
+        name: 'Password Generator & Strength Checker',
+        icon: IconLock,
+        component: () => import('../../components/tools/PasswordGenerator')
+      }
     ]
-  },
-  // ... other categories
+  }
 ];
