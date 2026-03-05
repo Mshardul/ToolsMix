@@ -4,8 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Simple password strength estimator
 const estimateStrength = (password: string): { score: number; label: string } => {
@@ -67,19 +68,22 @@ export default function PasswordGenerator() {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Password Generator & Strength Checker</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Generator Section */}
-        <div className="space-y-4">
-          <h3 className="font-medium">Generate Password</h3>
+    <div className="space-y-6">
+      {/* Generate Password Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Generate Password</CardTitle>
+          <CardDescription>
+            Choose criteria and generate a secure password
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Length: {length}</Label>
+              <Label htmlFor="length">Length: {length}</Label>
             </div>
             <Slider
+              id="length"
               min={4}
               max={32}
               step={1}
@@ -87,7 +91,8 @@ export default function PasswordGenerator() {
               onValueChange={(val) => setLength(val[0])}
             />
           </div>
-          <div className="flex flex-wrap gap-4">
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="uppercase"
@@ -121,30 +126,35 @@ export default function PasswordGenerator() {
               <Label htmlFor="symbols">!@#$%</Label>
             </div>
           </div>
-          <Button onClick={generatePassword}>Generate</Button>
+
+          <Button onClick={generatePassword}>Generate Password</Button>
+
           {generatedPassword && (
-            <div className="flex items-center space-x-2 mt-2">
-              <code className="flex-1 p-2 bg-muted rounded font-mono">{generatedPassword}</code>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => copyToClipboard(generatedPassword)}
-              >
+            <div className="flex items-center space-x-2 rounded-md border p-2">
+              <code className="flex-1 font-mono text-sm">{generatedPassword}</code>
+              <Button size="sm" variant="outline" onClick={() => copyToClipboard(generatedPassword)}>
                 Copy
               </Button>
             </div>
           )}
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Strength Checker Section */}
-        <div className="space-y-4 border-t pt-4">
-          <h3 className="font-medium">Check Password Strength</h3>
+      {/* Check Password Strength Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Check Password Strength</CardTitle>
+          <CardDescription>
+            Enter a password to evaluate its strength
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div className="flex space-x-2">
             <Input
               type="text"
               value={passwordToCheck}
               onChange={(e) => checkStrength(e.target.value)}
-              placeholder="Enter a password to check"
+              placeholder="Enter a password"
               className="flex-1"
             />
           </div>
@@ -155,8 +165,8 @@ export default function PasswordGenerator() {
             </div>
             <Progress value={(strength.score / 4) * 100} className="h-2" />
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

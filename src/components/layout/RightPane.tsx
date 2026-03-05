@@ -10,7 +10,6 @@ export default function RightPane() {
 
   useEffect(() => {
     if (selectedTool) {
-      // Create the lazy component only when selectedTool changes
       setLazyComponent(lazy(selectedTool.component));
     } else {
       setLazyComponent(null);
@@ -18,7 +17,7 @@ export default function RightPane() {
   }, [selectedTool]);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full w-full flex flex-col"> {/* Added w-full */}
       <ToolHeader tool={selectedTool} />
       <div className="flex-1 overflow-auto p-4">
         {selectedTool && LazyComponent ? (
